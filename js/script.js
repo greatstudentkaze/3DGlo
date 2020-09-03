@@ -22,15 +22,24 @@ window.addEventListener('DOMContentLoaded', () => {
     const updateTimer = () => {
       const timer = getTimeRemaining();
 
-      timerHours.textContent = timer.hours;
-      timerMinutes.textContent = timer.minutes;
-      timerSeconds.textContent = timer.seconds;
-
-      if (timer.timeRemaining > 0) setTimeout(updateTimer, 1000);
+      if (timer.timeRemaining > 0) {
+        timerHours.textContent = timer.hours;
+        timerMinutes.textContent = timer.minutes;
+        timerSeconds.textContent = timer.seconds;
+      } else {
+        timerHours.textContent = '0';
+        timerMinutes.textContent = '0';
+        timerSeconds.textContent = '0';
+      }
     }
 
     updateTimer();
+
+    const timerInterval = setInterval(() => {
+      if (getTimeRemaining().timeRemaining >= 0) updateTimer();
+      else clearInterval(timerInterval);
+    }, 1000);
   };
 
-  countTimer('03 september 2020 15:58');
+  countTimer('03 september 2020 17:27');
 });
