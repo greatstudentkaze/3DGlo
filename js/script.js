@@ -1,6 +1,8 @@
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
+  const addZero = number => number.toString().length === 1 ? `0${number}` : number;
+
   // Timer
   const countTimer = deadline => {
     const timerHours = document.getElementById('timer-hours'),
@@ -23,13 +25,13 @@ window.addEventListener('DOMContentLoaded', () => {
       const timer = getTimeRemaining();
 
       if (timer.timeRemaining > 0) {
-        timerHours.textContent = timer.hours;
-        timerMinutes.textContent = timer.minutes;
-        timerSeconds.textContent = timer.seconds;
+        timerHours.textContent = addZero(timer.hours);
+        timerMinutes.textContent = addZero(timer.minutes);
+        timerSeconds.textContent = addZero(timer.seconds);
       } else {
-        timerHours.textContent = '0';
-        timerMinutes.textContent = '0';
-        timerSeconds.textContent = '0';
+        timerHours.textContent = '00';
+        timerMinutes.textContent = '00';
+        timerSeconds.textContent = '00';
       }
     }
 
@@ -41,5 +43,5 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 1000);
   };
 
-  countTimer('03 september 2020 17:27');
+  countTimer('03 september 2020 17:33');
 });
