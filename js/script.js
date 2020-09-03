@@ -29,6 +29,7 @@ window.addEventListener('DOMContentLoaded', () => {
         timerMinutes.textContent = addZero(timer.minutes);
         timerSeconds.textContent = addZero(timer.seconds);
       } else {
+        clearInterval(timerInterval);
         timerHours.textContent = '00';
         timerMinutes.textContent = '00';
         timerSeconds.textContent = '00';
@@ -37,11 +38,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     updateTimer();
 
-    const timerInterval = setInterval(() => {
-      if (getTimeRemaining().timeRemaining >= 0) updateTimer();
-      else clearInterval(timerInterval);
-    }, 1000);
+    const timerInterval = setInterval(updateTimer, 1000);
   };
 
-  countTimer('03 september 2020 17:33');
+  countTimer('03 september 2020 22:30');
 });
