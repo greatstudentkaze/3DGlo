@@ -36,10 +36,10 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    const timerInterval = setInterval(updateTimer, 1000);
     updateTimer();
 
-    const timerInterval = setInterval(updateTimer, 1000);
   };
 
-  countTimer('03 september 2020 22:30');
+  countTimer('03 september 2020 22:37');
 });
