@@ -72,25 +72,20 @@ window.addEventListener('DOMContentLoaded', () => {
       popupBtns = document.querySelectorAll('.popup-btn'),
       closePopupBtn = popup.querySelector('.popup-close');
 
-    let stopAnimationId;
-    const animateOpeningPopup = () => {
-      stopAnimationId = requestAnimationFrame(animateOpeningPopup);
+    const animate = ({timing, draw, duration}) => {
+      const start = performance.now();
 
-      if (parseFloat(popupContent.style.top) < 10) {
-        popupContent.style.top = parseFloat(popupContent.style.top) + 5 + '%';
-      } else {
-        cancelAnimationFrame(stopAnimationId);
-      }
-    };
+      const animate = time => {
+        let timeFraction = (time - start) / duration;
+        if (timeFraction > 1) timeFraction = 1;
 
-    const animateClosingPopup = () => {
-      stopAnimationId = requestAnimationFrame(animateClosingPopup);
+        const progress = timing(timeFraction);
+        draw(progress);
 
-      if (parseFloat(popupContent.style.top) > -100) {
-        popupContent.style.top = parseFloat(popupContent.style.top) - 5 + '%';
-      } else {
-        cancelAnimationFrame(stopAnimationId);
-      }
+        if (timeFraction < 1) requestAnimationFrame(animate);
+      };
+
+      requestAnimationFrame(animate);
     };
 
     popupBtns.forEach(elem => elem.addEventListener('click', () => {
@@ -98,14 +93,41 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (document.documentElement.clientWidth >= 768) {
         popupContent.style.top = '-100%';
-        animateOpeningPopup();
+        function makeEaseOut(timing) {
+          return (timeFraction) => 1 - timing(1 - timeFraction);
+        }
+
+        function bounce(timeFraction) {
+          for (let a = 0, b = 1, result; 1; a += b, b /= 2) {
+            if (timeFraction >= (7 - 4 * a) / 11) {
+              return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2)
+            }
+          }
+        }
+
+        animate({
+          duration: 800,
+          timing: makeEaseOut(bounce),
+          draw(progress) {
+            popupContent.style.top = progress * 10 + '%';
+          }
+        });
       }
     }));
 
     closePopupBtn.addEventListener('click', () => {
       if (document.documentElement.clientWidth >= 768) {
-        animateClosingPopup();
-        setTimeout(() => popup.style.display = '', 200);
+        animate({
+          duration: 300,
+          timing(timeFraction) {
+            return timeFraction;
+          },
+          draw(progress) {
+            popupContent.style.top = progress * -100 + '%';
+          }
+        });
+
+        setTimeout(() => popup.style.display = '', 250);
       } else {
         popup.style.display = '';
       }
