@@ -69,8 +69,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const togglePopup = () => {
     const popup = document.querySelector('.popup'),
       popupContent = popup.querySelector('.popup-content'),
-      popupBtns = document.querySelectorAll('.popup-btn'),
-      closePopupBtn = popup.querySelector('.popup-close');
+      popupBtns = document.querySelectorAll('.popup-btn');
 
     const animate = ({timing, draw, duration}) => {
       const start = performance.now();
@@ -115,21 +114,31 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }));
 
-    closePopupBtn.addEventListener('click', () => {
-      if (document.documentElement.clientWidth >= 768) {
-        animate({
-          duration: 300,
-          timing(timeFraction) {
-            return timeFraction;
-          },
-          draw(progress) {
-            popupContent.style.top = progress * -100 + '%';
-          }
-        });
+    popup.addEventListener('click', evt => {
+      let target = evt.target;
 
-        setTimeout(() => popup.style.display = '', 250);
+      if (target.classList.contains('popup-close')) {
+        if (document.documentElement.clientWidth >= 768) {
+          animate({
+            duration: 300,
+            timing(timeFraction) {
+              return timeFraction;
+            },
+            draw(progress) {
+              popupContent.style.top = progress * -100 + '%';
+            }
+          });
+
+          setTimeout(() => popup.style.display = '', 250);
+        } else {
+          popup.style.display = '';
+        }
       } else {
-        popup.style.display = '';
+        target = target.closest('.popup-content');
+
+        if (!target) {
+          popup.style.display = '';
+        }
       }
     });
   };
