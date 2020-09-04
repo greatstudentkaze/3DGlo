@@ -148,4 +148,42 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   smoothScrollDown();
+
+  // Tabs
+  const tabs = () => {
+    const tabHeader = document.querySelector('.service-header'),
+      tabs = tabHeader.querySelectorAll('.service-header-tab'),
+      tabsContent = document.querySelectorAll('.service-tab');
+
+    const toggleTabContent = index => {
+      for (let i = 0; i < tabsContent.length; i++) {
+        if (index === i) {
+          tabs[i].classList.add('active');
+          tabsContent[i].classList.remove('d-none');
+        } else {
+          tabs[i].classList.remove('active');
+          tabsContent[i].classList.add('d-none');
+        }
+      }
+    };
+
+    tabHeader.addEventListener('click', evt => {
+      let target = evt.target;
+
+      while (target !== tabHeader) {
+        if (target.classList.contains('service-header-tab')) {
+          tabs.forEach((item, index) => {
+            if (item === target) {
+              toggleTabContent(index);
+            }
+          });
+          return;
+        }
+
+        target = target.parentElement;
+      }
+    });
+  };
+
+  tabs();
 });
