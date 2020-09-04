@@ -38,8 +38,34 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const timerInterval = setInterval(updateTimer, 1000);
     updateTimer();
-
   };
 
-  countTimer('03 september 2020 22:37');
+  countTimer('05 september 2020 22:37');
+
+  // Menu
+  const toggleMenu = () => {
+    const menuBtn = document.querySelector('.menu'),
+      menu = document.querySelector('menu'),
+      closeMenuBtn = document.querySelector('.close-btn'),
+      menuItems = menu.querySelectorAll('ul > li');
+
+    const menuHandler = () => {
+      if (!menu.style.transform || menu.style.transform === 'translate(-100%)') {
+        menu.style.transform = 'translate(0)';
+      } else {
+        menu.style.transform = '';
+      }
+    };
+
+    menuBtn.addEventListener('click', menuHandler);
+
+    closeMenuBtn.addEventListener('click', evt => {
+      evt.preventDefault();
+      menuHandler();
+    });
+
+    menuItems.forEach(item => item.addEventListener('click', menuHandler));
+  };
+
+  toggleMenu();
 });
