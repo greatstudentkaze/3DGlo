@@ -168,19 +168,13 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     tabHeader.addEventListener('click', evt => {
-      let target = evt.target;
-
-      while (target !== tabHeader) {
-        if (target.classList.contains('service-header-tab')) {
-          tabs.forEach((item, index) => {
-            if (item === target) {
-              toggleTabContent(index);
-            }
-          });
-          return;
-        }
-
-        target = target.parentElement;
+      const target = evt.target.closest('.service-header-tab');
+      if (target) {
+        tabs.forEach((item, index) => {
+          if (item === target) {
+            toggleTabContent(index);
+          }
+        });
       }
     });
   };
