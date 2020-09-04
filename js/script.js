@@ -68,15 +68,47 @@ window.addEventListener('DOMContentLoaded', () => {
   // Popups
   const togglePopup = () => {
     const popup = document.querySelector('.popup'),
+      popupContent = popup.querySelector('.popup-content'),
       popupBtns = document.querySelectorAll('.popup-btn'),
       closePopupBtn = popup.querySelector('.popup-close');
 
+    let stopAnimationId;
+    const animateOpeningPopup = () => {
+      stopAnimationId = requestAnimationFrame(animateOpeningPopup);
+
+      if (parseFloat(popupContent.style.top) < 10) {
+        popupContent.style.top = parseFloat(popupContent.style.top) + 5 + '%';
+      } else {
+        cancelAnimationFrame(stopAnimationId);
+      }
+    };
+
+    const animateClosingPopup = () => {
+      stopAnimationId = requestAnimationFrame(animateClosingPopup);
+
+      if (parseFloat(popupContent.style.top) > -100) {
+        popupContent.style.top = parseFloat(popupContent.style.top) - 5 + '%';
+      } else {
+        cancelAnimationFrame(stopAnimationId);
+      }
+    };
+
     popupBtns.forEach(elem => elem.addEventListener('click', () => {
       popup.style.display = 'block';
+
+      if (document.documentElement.clientWidth >= 768) {
+        popupContent.style.top = '-100%';
+        animateOpeningPopup();
+      }
     }));
 
     closePopupBtn.addEventListener('click', () => {
-      popup.style.display = '';
+      if (document.documentElement.clientWidth >= 768) {
+        animateClosingPopup();
+        setTimeout(() => popup.style.display = '', 200);
+      } else {
+        popup.style.display = '';
+      }
     });
   };
 
