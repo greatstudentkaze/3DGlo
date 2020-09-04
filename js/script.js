@@ -127,7 +127,10 @@ window.addEventListener('DOMContentLoaded', () => {
           }
         });
 
-        setTimeout(() => popup.style.display = '', 250);
+        setTimeout(() => {
+          popup.style.display = '';
+          popupContent.style.top = '';
+        }, 320);
       } else {
         popup.style.display = '';
       }
