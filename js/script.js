@@ -135,4 +135,17 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   togglePopup();
+
+  // Smooth Scrolling to service-block
+  const smoothScrollDown = () => {
+    const scrollBtn = document.querySelector('.js-scroll-btn'),
+      scrollTarget = document.querySelector('.service');
+
+    scrollBtn.addEventListener('click', evt => {
+      evt.preventDefault();
+      scrollBy(0, scrollTarget.getBoundingClientRect().top);
+    });
+  };
+
+  smoothScrollDown();
 });
