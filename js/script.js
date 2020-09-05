@@ -45,36 +45,39 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Menu
   const toggleMenu = () => {
-    const menu = document.querySelector('menu'),
-      menuItems = menu.querySelectorAll('ul > li');
+    const menu = document.querySelector('menu');
 
     const menuHandler = () => {
       menu.classList.toggle('active-menu');
     };
 
     document.addEventListener('click', evt => {
-      let target = evt.target;
-      console.log(target);
+      const target = evt.target;
 
+      /*
+      Меню закрывается, если происходит нажатие на:
+        1. Кнопку "Меню"
+        2. Крестик в меню
+        3. Любое место вне меню, когда оно активно
+        4. Ссылку в меню
+
+      Также при нажатии на ссылку в меню происходит плавная прокрутка страницы до нужного блока
+      */
       if (!target.closest('.menu') &&
-        !(target.closest('.close-btn') && menu.contains(target.closest('.close-btn')))) return;
+        !(target.closest('.close-btn') && menu.contains(target.closest('.close-btn'))) &&
+        !(!target.closest('menu') && menu.classList.contains('active-menu'))) {
+
+        if (target.closest('ul > li')) {
+          const scrollTarget = document.getElementById(`${evt.target.getAttribute('href').slice(1)}`);
+          scrollBy({
+            top: scrollTarget.getBoundingClientRect().top,
+            behavior: 'smooth'
+          });
+        } else return;
+      }
 
       evt.preventDefault();
       menuHandler();
-    });
-
-    menuItems.forEach(elem => {
-      elem.addEventListener('click', evt => {
-        const scrollTarget = document.getElementById(`${evt.target.getAttribute('href').slice(1)}`);
-
-        evt.preventDefault();
-        scrollBy({
-          top: scrollTarget.getBoundingClientRect().top,
-          behavior: 'smooth'
-        });
-
-        menuHandler();
-      });
     });
   };
 
