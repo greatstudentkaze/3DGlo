@@ -67,7 +67,7 @@ window.addEventListener('DOMContentLoaded', () => {
         !(target.closest('.close-btn') && menu.contains(target.closest('.close-btn'))) &&
         !(!target.closest('menu') && menu.classList.contains('active-menu'))) {
 
-        if (target.closest('ul > li')) {
+        if (target.closest('menu > ul > li')) {
           const scrollTarget = document.getElementById(`${evt.target.getAttribute('href').slice(1)}`);
           scrollBy({
             top: scrollTarget.getBoundingClientRect().top,
@@ -113,7 +113,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const makeEaseOut = timing => (timeFraction) => 1 - timing(1 - timeFraction);
 
         const bounce = timeFraction => {
-          for (let a = 0, b = 1, result; 1; a += b, b /= 2) {
+          for (let a = 0, b = 1; 1; a += b, b /= 2) {
             if (timeFraction >= (7 - 4 * a) / 11) {
               return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2);
             }
@@ -211,4 +211,67 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   tabs();
+
+  // Slider
+  const slider = () => {
+    const slider = document.querySelector('.portfolio-content'),
+      slides = slider.querySelectorAll('.portfolio-item'),
+      sliderDots = slider.querySelectorAll('.dot');
+
+    let currentSlide = 0,
+      stopIdInterval;
+
+    const prevSlide = (slides, index, strClass) => slides[index].classList.remove(strClass);
+
+    const nextSlide = (slides, index, strClass) => slides[index].classList.add(strClass);
+
+    const autoplaySlider = () => {
+      prevSlide(slides, currentSlide, 'portfolio-item-active');
+      prevSlide(sliderDots, currentSlide, 'dot-active');
+      currentSlide++;
+      if (currentSlide >= slides.length) currentSlide = 0;
+      nextSlide(slides, currentSlide, 'portfolio-item-active');
+      nextSlide(sliderDots, currentSlide, 'dot-active');
+    };
+
+    const startSlider = (time = 3000) => stopIdInterval = setInterval(autoplaySlider, time);
+
+    const stopSlider = () => clearInterval(stopIdInterval);
+
+    slider.addEventListener('click', evt => {
+      const target = evt.target;
+      evt.preventDefault();
+
+      if (!target.matches('.portfolio-btn, .dot')) return;
+
+      prevSlide(slides, currentSlide, 'portfolio-item-active');
+      prevSlide(sliderDots, currentSlide, 'dot-active');
+
+      if (target.matches('#arrow-right')) currentSlide++;
+      else if (target.matches('#arrow-left')) currentSlide--;
+      else if (target.matches('.dot')) {
+        sliderDots.forEach((dot, index) => {
+          if (dot === target) currentSlide = index;
+        });
+      }
+
+      if (currentSlide >= slides.length) currentSlide = 0;
+      if (currentSlide < 0) currentSlide = slides.length - 1;
+
+      nextSlide(slides, currentSlide, 'portfolio-item-active');
+      nextSlide(sliderDots, currentSlide, 'dot-active');
+    });
+
+    slider.addEventListener('mouseover', evt => {
+      if (evt.target.matches('.portfolio-btn') || evt.target.matches('.dot')) stopSlider();
+    });
+
+    slider.addEventListener('mouseout', evt => {
+      if (evt.target.matches('.portfolio-btn') || evt.target.matches('.dot')) startSlider();
+    });
+
+    startSlider();
+  };
+
+  slider();
 });
