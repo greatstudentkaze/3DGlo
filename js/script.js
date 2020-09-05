@@ -216,7 +216,21 @@ window.addEventListener('DOMContentLoaded', () => {
   const slider = () => {
     const slider = document.querySelector('.portfolio-content'),
       slides = slider.querySelectorAll('.portfolio-item'),
-      sliderDots = slider.querySelectorAll('.dot');
+      sliderDots = slider.getElementsByClassName('dot');
+
+    const renderDots = () => {
+      const sliderDots = slider.querySelector('.portfolio-dots');
+
+      for (let i = 0; i < slides.length; i++) {
+        const dot = document.createElement('li');
+        dot.classList.add('dot');
+        if (i === 0) dot.classList.add('dot-active');
+
+        sliderDots.append(dot);
+      }
+    };
+
+    renderDots();
 
     let currentSlide = 0,
       stopIdInterval;
@@ -250,7 +264,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if (target.matches('#arrow-right')) currentSlide++;
       else if (target.matches('#arrow-left')) currentSlide--;
       else if (target.matches('.dot')) {
-        sliderDots.forEach((dot, index) => {
+        [...sliderDots].forEach((dot, index) => {
           if (dot === target) currentSlide = index;
         });
       }
