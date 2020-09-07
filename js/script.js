@@ -310,4 +310,16 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   hoverOverImage();
+
+  // Calculator Validation
+  const calcValidation = () => {
+    const inputs = document.querySelectorAll('input.calc-item');
+
+    inputs.forEach(elem =>
+      elem.addEventListener('input', evt => {
+        evt.target.value = evt.target.value.replace(/\D/g, '');
+      }));
+  };
+
+  calcValidation();
 });
