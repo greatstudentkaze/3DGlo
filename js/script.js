@@ -313,12 +313,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Calculator Validation
   const calcValidation = () => {
-    const inputs = document.querySelectorAll('input.calc-item');
+    const calcBlock = document.querySelector('.calc-block');
 
-    inputs.forEach(elem =>
-      elem.addEventListener('input', evt => {
-        evt.target.value = evt.target.value.replace(/\D/g, '');
-      }));
+    calcBlock.addEventListener('input', evt => {
+      const target = evt.target;
+
+      if (target.matches('input')) target.value = target.value.replace(/\D/g, '');
+    });
   };
 
   calcValidation();
