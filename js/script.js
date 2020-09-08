@@ -3,6 +3,22 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const addZero = number => number.toString().length === 1 ? `0${number}` : number;
 
+  const animate = ({timing, draw, duration}) => {
+    const start = performance.now();
+
+    const animate = time => {
+      let timeFraction = (time - start) / duration;
+      if (timeFraction > 1) timeFraction = 1;
+
+      const progress = timing(timeFraction);
+      draw(progress);
+
+      if (timeFraction < 1) requestAnimationFrame(animate);
+    };
+
+    requestAnimationFrame(animate);
+  };
+
   // Timer
   const countTimer = deadline => {
     const timerHours = document.getElementById('timer-hours'),
@@ -88,22 +104,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const popup = document.querySelector('.popup'),
       popupContent = popup.querySelector('.popup-content'),
       popupBtns = document.querySelectorAll('.popup-btn');
-
-    const animate = ({timing, draw, duration}) => {
-      const start = performance.now();
-
-      const animate = time => {
-        let timeFraction = (time - start) / duration;
-        if (timeFraction > 1) timeFraction = 1;
-
-        const progress = timing(timeFraction);
-        draw(progress);
-
-        if (timeFraction < 1) requestAnimationFrame(animate);
-      };
-
-      requestAnimationFrame(animate);
-    };
 
     popupBtns.forEach(elem => elem.addEventListener('click', () => {
       popup.style.display = 'block';
@@ -342,7 +342,15 @@ window.addEventListener('DOMContentLoaded', () => {
         total = price * typeValue * areaValue * amountValue * daysValue;
       }
 
-      totalCost.textContent = total;
+      animate({
+        duration: 500,
+        timing(timeFraction) {
+          return timeFraction;
+        },
+        draw(progress) {
+          totalCost.textContent = Math.round(progress * total);
+        }
+      });
     };
 
     calcBlock.addEventListener('input', evt => {
