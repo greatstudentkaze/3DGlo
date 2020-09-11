@@ -364,10 +364,12 @@ window.addEventListener('DOMContentLoaded', () => {
       loadMsg = 'Загрузка...',
       successMsg = 'Спасибо! Мы скоро с Вами свяжемся!';
 
-    const form = document.getElementById('form1');
+    const introForm = document.getElementById('form1'),
+      questionForm = document.getElementById('form2'),
+      popupForm = document.getElementById('form3');
 
     const statusMsg = document.createElement('div');
-    statusMsg.style.cssText = 'font-size: 2rem;';
+    statusMsg.style.cssText = 'font-size: 2rem; color: #ffffff';
 
     const postData = (body, outputData, errorData) => {
       const request = new XMLHttpRequest();
@@ -384,14 +386,13 @@ window.addEventListener('DOMContentLoaded', () => {
       request.send(JSON.stringify(body));
     };
 
-    form.addEventListener('submit', evt => {
+    const formHandler = evt => {
       evt.preventDefault();
-      form.append(statusMsg);
+      evt.target.append(statusMsg);
       statusMsg.textContent = loadMsg;
 
-      const formData = new FormData(form);
-
-      const body = {};
+      const formData = new FormData(evt.target),
+        body = {};
       formData.forEach((value, key) => (body[key] = value));
 
       postData(body, () => {
@@ -400,7 +401,11 @@ window.addEventListener('DOMContentLoaded', () => {
         statusMsg.textContent = errorMsg;
         console.error(error);
       });
-    });
+    };
+
+    introForm.addEventListener('submit', formHandler);
+    questionForm.addEventListener('submit', formHandler);
+    popupForm.addEventListener('submit', formHandler);
   };
 
   sendForm();
