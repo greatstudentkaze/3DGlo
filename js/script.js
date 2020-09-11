@@ -1,9 +1,9 @@
+'use strict';
+
 window.addEventListener('DOMContentLoaded', () => {
-  'use strict';
+  const addZero = number => (number.toString().length === 1 ? `0${number}` : number);
 
-  const addZero = number => number.toString().length === 1 ? `0${number}` : number;
-
-  const animate = ({timing, draw, duration}) => {
+  const animate = ({ timing, draw, duration }) => {
     const start = performance.now();
 
     const animate = time => {
@@ -34,9 +34,10 @@ window.addEventListener('DOMContentLoaded', () => {
         minutes = Math.floor(timeRemaining / 60 % 60),
         hours = Math.floor(timeRemaining / 3600);
 
-      return {timeRemaining, hours, minutes, seconds};
+      return { timeRemaining, hours, minutes, seconds };
     };
 
+    // eslint-disable-next-line prefer-const
     let timerInterval;
     const updateTimer = () => {
       const timer = getTimeRemaining();
@@ -70,15 +71,6 @@ window.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', evt => {
       const target = evt.target;
 
-      /*
-      Меню закрывается, если происходит нажатие на:
-        1. Кнопку "Меню"
-        2. Крестик в меню
-        3. Любое место вне меню, когда оно активно
-        4. Ссылку в меню
-
-      Также при нажатии на ссылку в меню происходит плавная прокрутка страницы до нужного блока
-      */
       if (!target.closest('.menu') &&
         !(target.closest('.close-btn') && menu.contains(target.closest('.close-btn'))) &&
         !(!target.closest('menu') && menu.classList.contains('active-menu'))) {
@@ -110,7 +102,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (document.documentElement.clientWidth >= 768) {
         popupContent.style.top = '-100%';
-        const makeEaseOut = timing => (timeFraction) => 1 - timing(1 - timeFraction);
+        const makeEaseOut = timing => timeFraction => 1 - timing(1 - timeFraction);
 
         const bounce = timeFraction => {
           for (let a = 0, b = 1; 1; a += b, b /= 2) {
