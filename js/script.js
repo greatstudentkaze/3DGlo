@@ -369,29 +369,37 @@ window.addEventListener('DOMContentLoaded', () => {
     const statusMsg = document.createElement('div');
     statusMsg.style.cssText = 'font-size: 2rem;';
 
-    form.addEventListener('submit', evt => {
-      evt.preventDefault();
-      form.append(statusMsg);
-
+    const postData = (body, outputData, errorData) => {
       const request = new XMLHttpRequest();
       request.addEventListener('readystatechange', () => {
-        statusMsg.textContent = loadMsg;
-
         if (request.readyState !== 4) return;
 
-        if (request.status === 200) statusMsg.textContent = successMsg;
-        else statusMsg.textContent = errorMsg;
+        if (request.status === 200) outputData();
+        else errorData(request.status);
       });
 
       request.open('POST', '../server.php');
       request.setRequestHeader('Content-Type', 'application/json');
+
+      request.send(JSON.stringify(body));
+    };
+
+    form.addEventListener('submit', evt => {
+      evt.preventDefault();
+      form.append(statusMsg);
+      statusMsg.textContent = loadMsg;
 
       const formData = new FormData(form);
 
       const body = {};
       formData.forEach((value, key) => (body[key] = value));
 
-      request.send(JSON.stringify(body));
+      postData(body, () => {
+        statusMsg.textContent = successMsg;
+      }, error => {
+        statusMsg.textContent = errorMsg;
+        console.error(error);
+      });
     });
   };
 
