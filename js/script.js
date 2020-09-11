@@ -380,7 +380,7 @@ window.addEventListener('DOMContentLoaded', () => {
         else errorData(request.status);
       });
 
-      request.open('POST', '../server.php');
+      request.open('POST', 'server.php');
       request.setRequestHeader('Content-Type', 'application/json');
 
       request.send(JSON.stringify(body));
@@ -391,12 +391,17 @@ window.addEventListener('DOMContentLoaded', () => {
       evt.target.append(statusMsg);
       statusMsg.textContent = loadMsg;
 
-      const formData = new FormData(evt.target),
-        body = {};
+      const body = {},
+        formData = new FormData(evt.target);
       formData.forEach((value, key) => (body[key] = value));
+
+      const formElements = [...evt.target.elements]
+        .filter(elem => elem.tagName.toLowerCase() !== 'button' && elem.type !== 'button');
 
       postData(body, () => {
         statusMsg.textContent = successMsg;
+
+        formElements.forEach(elem => elem.value = '');
       }, error => {
         statusMsg.textContent = errorMsg;
         console.error(error);
