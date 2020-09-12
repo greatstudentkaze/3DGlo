@@ -361,8 +361,21 @@ window.addEventListener('DOMContentLoaded', () => {
   // Send ajax form
   const sendForm = () => {
     const errorMsg = 'Что-то пошло не так...',
-      loadMsg = 'Загрузка...',
-      successMsg = 'Спасибо! Мы скоро с Вами свяжемся!';
+      successMsg = 'Спасибо! Мы скоро с Вами свяжемся!',
+      loadMsg = `<div class="sk-circle-bounce">
+                  <div class="sk-child sk-circle-1"></div>
+                  <div class="sk-child sk-circle-2"></div>
+                  <div class="sk-child sk-circle-3"></div>
+                  <div class="sk-child sk-circle-4"></div>
+                  <div class="sk-child sk-circle-5"></div>
+                  <div class="sk-child sk-circle-6"></div>
+                  <div class="sk-child sk-circle-7"></div>
+                  <div class="sk-child sk-circle-8"></div>
+                  <div class="sk-child sk-circle-9"></div>
+                  <div class="sk-child sk-circle-10"></div>
+                  <div class="sk-child sk-circle-11"></div>
+                  <div class="sk-child sk-circle-12"></div>
+                </div>`;
 
     // eslint-disable-next-line no-undef
     maskPhone('input[name="user_phone"]');
@@ -412,7 +425,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (!errors.size) {
         evt.target.append(statusMsg);
-        statusMsg.textContent = loadMsg;
+        statusMsg.innerHTML = loadMsg;
 
         const body = {},
           formData = new FormData(evt.target);
