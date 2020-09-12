@@ -373,10 +373,6 @@ window.addEventListener('DOMContentLoaded', () => {
       'user_message': /^[а-яё ]+$/i
     };
 
-    const introForm = document.getElementById('form1'),
-      questionForm = document.getElementById('form2'),
-      popupForm = document.getElementById('form3');
-
     const statusMsg = document.createElement('div');
     statusMsg.style.cssText = 'font-size: 2rem; color: #ffffff';
 
@@ -433,9 +429,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    introForm.addEventListener('submit', formHandler);
-    questionForm.addEventListener('submit', formHandler);
-    popupForm.addEventListener('submit', formHandler);
+    [...document.forms].forEach(form => form.addEventListener('submit', formHandler));
   };
 
   sendForm();
