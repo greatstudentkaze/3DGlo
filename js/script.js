@@ -364,6 +364,15 @@ window.addEventListener('DOMContentLoaded', () => {
       loadMsg = 'Загрузка...',
       successMsg = 'Спасибо! Мы скоро с Вами свяжемся!';
 
+    // eslint-disable-next-line no-undef
+    maskPhone('input[name="user_phone"]');
+    const patterns = {
+      'user_name': /^[а-яё ]+$/i,
+      'user_email': /^\w+@\w+\.\w{2,}$/i,
+      'user_phone': /^\+?[78]([-() ]*\d){10}$/,
+      'user_message': /^[а-яё ]+$/i
+    };
+
     const introForm = document.getElementById('form1'),
       questionForm = document.getElementById('form2'),
       popupForm = document.getElementById('form3');
@@ -388,24 +397,40 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const formHandler = evt => {
       evt.preventDefault();
-      evt.target.append(statusMsg);
-      statusMsg.textContent = loadMsg;
+      const errors = new Set(),
+        formElements = [...evt.target.elements]
+          .filter(elem => elem.tagName.toLowerCase() !== 'button' && elem.type !== 'button');
 
-      const body = {},
-        formData = new FormData(evt.target);
-      formData.forEach((value, key) => (body[key] = value));
-
-      const formElements = [...evt.target.elements]
-        .filter(elem => elem.tagName.toLowerCase() !== 'button' && elem.type !== 'button');
-
-      postData(body, () => {
-        statusMsg.textContent = successMsg;
-
-        formElements.forEach(elem => elem.value = '');
-      }, error => {
-        statusMsg.textContent = errorMsg;
-        console.error(error);
+      formElements.forEach(elem => {
+        if (!elem.value.trim()) {
+          elem.style.border = '2px solid red';
+          errors.add(elem);
+        } else if (!patterns[elem.name].test(elem.value)) {
+          elem.style.border = '2px solid red';
+          errors.add(elem);
+        } else {
+          elem.style.border = '';
+          errors.delete(elem);
+        }
       });
+
+      if (!errors.size) {
+        evt.target.append(statusMsg);
+        statusMsg.textContent = loadMsg;
+
+        const body = {},
+          formData = new FormData(evt.target);
+        formData.forEach((value, key) => (body[key] = value.trim()));
+
+        postData(body, () => {
+          statusMsg.textContent = successMsg;
+
+          formElements.forEach(elem => elem.value = '');
+        }, error => {
+          statusMsg.textContent = errorMsg;
+          console.error(error);
+        });
+      }
     };
 
     introForm.addEventListener('submit', formHandler);
