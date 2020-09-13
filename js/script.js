@@ -398,7 +398,7 @@ window.addEventListener('DOMContentLoaded', () => {
       ],
       'form2-message': [
         ['notEmpty'],
-        ['pattern', 'russianLettersAndSymbols']
+        ['pattern', 'onlyRussian']
       ]
     }
   });

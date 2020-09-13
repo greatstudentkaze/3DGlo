@@ -55,7 +55,7 @@ class Validator {
     elem.classList.add('error');
 
     if (!elem.nextElementSibling || !elem.nextElementSibling.classList.contains('error-msg')) {
-      const errorMsg = document.createElement('span');
+      const errorMsg = document.createElement('div');
       errorMsg.textContent = 'Ошибка в этом поле';
       errorMsg.classList.add('error-msg');
       elem.insertAdjacentElement('afterend', errorMsg);
@@ -64,7 +64,6 @@ class Validator {
 
   showSuccess(elem) {
     elem.classList.remove('error');
-    elem.classList.add('success');
 
     if (elem.nextElementSibling && elem.nextElementSibling.classList.contains('error-msg')) {
       elem.nextElementSibling.remove();
@@ -74,8 +73,6 @@ class Validator {
   setPatterns() {
     if (!this.patterns.phone) this.patterns.phone = /^\+?[78]([-() ]*\d){10}$/;
     if (!this.patterns.email) this.patterns.email = /^\w+@\w+\.\w{2,}$/;
-    if (!this.patterns.onlyRussian) this.patterns.onlyRussian = /^[а-яё]+$/gi;
-    if (!this.patterns.russianLettersAndSymbols)
-      this.patterns.russianLettersAndSymbols = /^([а-яё][- !&,?:()№.]*)+$/gmi;
+    if (!this.patterns.onlyRussian) this.patterns.onlyRussian = /^[а-яё ]+$/i;
   }
 }

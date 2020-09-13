@@ -1,25 +1,37 @@
-form input.success {
-    border: 2px solid green;
+input.success {
+    border: 2px solid green !important;
 }
 
-form input.error {
+input.error {
     position: relative;
 
-    border: 2px solid red;
+    border: 2px solid red !important;
 }
 
 .error-msg {
     content: "";
     position: absolute;
-    bottom: -5px;
+    bottom: 0;
     left: 50%;
 
-    width: 100px;
+    width: 120px;
     height: 12px;
 
     font-family: sans-serif;
-    font-size: 10px;
+    font-size: 12px;
     color: red;
 
     transform: translateX(-50%);
+}
+
+#form1 .error-msg {
+    bottom: 10px;
+}
+
+#form2 .error-msg {
+    display: none;
+}
+
+#form3 .error-msg {
+    display: none;
 }
