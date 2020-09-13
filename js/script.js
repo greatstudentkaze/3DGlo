@@ -1,7 +1,14 @@
-window.addEventListener('DOMContentLoaded', () => {
-  'use strict';
+'use strict';
 
-  const addZero = number => number.toString().length === 1 ? `0${number}` : number;
+window.addEventListener('DOMContentLoaded', () => {
+  const addZero = number => (number.toString().length === 1 ? `0${number}` : number);
+
+  const smoothScrollBy = scrollTarget => {
+    scrollBy({
+      top: scrollTarget.getBoundingClientRect().top,
+      behavior: 'smooth'
+    });
+  };
 
   // Timer
   const countTimer = deadline => {
@@ -18,7 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
         minutes = Math.floor(timeRemaining / 60 % 60),
         hours = Math.floor(timeRemaining / 3600);
 
-      return {timeRemaining, hours, minutes, seconds};
+      return { timeRemaining, hours, minutes, seconds };
     };
 
     let timerInterval;
@@ -52,32 +59,20 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     document.addEventListener('click', evt => {
-      const target = evt.target;
+      const target = evt.target,
+        closeBtn = target.closest('.close-btn'),
+        menuBtn = target.closest('.menu'),
+        menuItem = target.closest('menu > ul > li'),
+        areaOutsideMenu = !target.closest('menu');
 
-      /*
-      Меню закрывается, если происходит нажатие на:
-        1. Кнопку "Меню"
-        2. Крестик в меню
-        3. Любое место вне меню, когда оно активно
-        4. Ссылку в меню
-
-      Также при нажатии на ссылку в меню происходит плавная прокрутка страницы до нужного блока
-      */
-      if (!target.closest('.menu') &&
-        !(target.closest('.close-btn') && menu.contains(target.closest('.close-btn'))) &&
-        !(!target.closest('menu') && menu.classList.contains('active-menu'))) {
-
-        if (target.closest('ul > li')) {
-          const scrollTarget = document.getElementById(`${evt.target.getAttribute('href').slice(1)}`);
-          scrollBy({
-            top: scrollTarget.getBoundingClientRect().top,
-            behavior: 'smooth'
-          });
-        } else return;
+      if (menuBtn || closeBtn || (areaOutsideMenu && menu.classList.contains('active-menu'))) {
+        evt.preventDefault();
+        menuHandler();
+      } else if (menuItem) {
+        evt.preventDefault();
+        smoothScrollBy(document.getElementById(`${evt.target.getAttribute('href').slice(1)}`));
+        menuHandler();
       }
-
-      evt.preventDefault();
-      menuHandler();
     });
   };
 
@@ -89,7 +84,7 @@ window.addEventListener('DOMContentLoaded', () => {
       popupContent = popup.querySelector('.popup-content'),
       popupBtns = document.querySelectorAll('.popup-btn');
 
-    const animate = ({timing, draw, duration}) => {
+    const animate = ({ timing, draw, duration }) => {
       const start = performance.now();
 
       const animate = time => {
@@ -110,10 +105,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (document.documentElement.clientWidth >= 768) {
         popupContent.style.top = '-100%';
-        const makeEaseOut = timing => (timeFraction) => 1 - timing(1 - timeFraction);
+        const makeEaseOut = timing => timeFraction => 1 - timing(1 - timeFraction);
 
         const bounce = timeFraction => {
-          for (let a = 0, b = 1, result; 1; a += b, b /= 2) {
+          for (let a = 0, b = 1; 1; a += b, b /= 2) {
             if (timeFraction >= (7 - 4 * a) / 11) {
               return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2);
             }
@@ -171,10 +166,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     scrollBtn.addEventListener('click', evt => {
       evt.preventDefault();
-      scrollBy({
-        top: scrollTarget.getBoundingClientRect().top,
-        behavior: 'smooth'
-      });
+      smoothScrollBy(scrollTarget);
     });
   };
 
