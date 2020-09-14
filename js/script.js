@@ -390,20 +390,19 @@ window.addEventListener('DOMContentLoaded', () => {
     const statusMsg = document.createElement('div');
     statusMsg.style.cssText = 'font-size: 2rem; color: #ffffff';
 
-    const postData = (body, outputData, errorData) => {
-      const request = new XMLHttpRequest();
-      request.addEventListener('readystatechange', () => {
-        if (request.readyState !== 4) return;
+    const postData = body =>
+      new Promise((resolve, reject) => {
+        const request = new XMLHttpRequest();
+        request.addEventListener('readystatechange', () => {
+          if (request.readyState !== 4) return;
+          if (request.status === 200) resolve();
+          else reject(request.status);
+        });
 
-        if (request.status === 200) outputData();
-        else errorData(request.status);
+        request.open('POST', 'server.php');
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.send(JSON.stringify(body));
       });
-
-      request.open('POST', 'server.php');
-      request.setRequestHeader('Content-Type', 'application/json');
-
-      request.send(JSON.stringify(body));
-    };
 
     const formHandler = evt => {
       evt.preventDefault();
@@ -432,14 +431,15 @@ window.addEventListener('DOMContentLoaded', () => {
           formData = new FormData(evt.target);
         formData.forEach((value, key) => (body[key] = value.trim()));
 
-        postData(body, () => {
-          statusMsg.textContent = successMsg;
-
-          formElements.forEach(elem => elem.value = '');
-        }, error => {
-          statusMsg.textContent = errorMsg;
-          console.error(error);
-        });
+        postData(body)
+          .then(() => {
+            statusMsg.textContent = successMsg;
+            formElements.forEach(elem => elem.value = '');
+          })
+          .catch(err => {
+            statusMsg.textContent = errorMsg;
+            console.error(err);
+          });
       }
     };
 
