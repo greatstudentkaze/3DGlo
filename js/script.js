@@ -369,14 +369,10 @@ window.addEventListener('DOMContentLoaded', () => {
     maskPhone('input[name="user_phone"]');
     const patterns = {
       'user_name': /^[а-яё ]+$/i,
-      'user_email': /^\w+@\w+\.\w{2,}$/i,
+      'user_email': /^[\w.]+@\w+\.\w{2,}$/i,
       'user_phone': /^\+?[78]([-() ]*\d){10}$/,
       'user_message': /^[а-яё ]+$/i
     };
-
-    const introForm = document.getElementById('form1'),
-      questionForm = document.getElementById('form2'),
-      popupForm = document.getElementById('form3');
 
     const statusMsg = document.createElement('div');
     statusMsg.style.cssText = 'font-size: 2rem; color: #ffffff';
@@ -434,9 +430,14 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    introForm.addEventListener('submit', formHandler);
-    questionForm.addEventListener('submit', formHandler);
-    popupForm.addEventListener('submit', formHandler);
+    document.body.addEventListener('submit', formHandler);
+    document.body.addEventListener('input', evt => {
+      const target = evt.target;
+
+      if (target.matches('input[name="user_name"]') || target.matches('input[name="user_message"]')) {
+        target.value = target.value.replace(/[^а-яё ]/gi, '');
+      }
+    });
   };
 
   sendForm();
