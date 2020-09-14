@@ -19,6 +19,13 @@ window.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(animate);
   };
 
+  const smoothScrollBy = scrollTarget => {
+    scrollBy({
+      top: scrollTarget.getBoundingClientRect().top,
+      behavior: 'smooth'
+    });
+  };
+
   // Timer
   const countTimer = deadline => {
     const timerHours = document.getElementById('timer-hours'),
@@ -69,23 +76,20 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     document.addEventListener('click', evt => {
-      const target = evt.target;
+      const target = evt.target,
+        closeBtn = target.closest('.close-btn'),
+        menuBtn = target.closest('.menu'),
+        menuItem = target.closest('menu > ul > li'),
+        areaOutsideMenu = !target.closest('menu');
 
-      if (!target.closest('.menu') &&
-        !(target.closest('.close-btn') && menu.contains(target.closest('.close-btn'))) &&
-        !(!target.closest('menu') && menu.classList.contains('active-menu'))) {
-
-        if (target.closest('menu > ul > li')) {
-          const scrollTarget = document.getElementById(`${evt.target.getAttribute('href').slice(1)}`);
-          scrollBy({
-            top: scrollTarget.getBoundingClientRect().top,
-            behavior: 'smooth'
-          });
-        } else return;
+      if (menuBtn || closeBtn || (areaOutsideMenu && menu.classList.contains('active-menu'))) {
+        evt.preventDefault();
+        menuHandler();
+      } else if (menuItem) {
+        evt.preventDefault();
+        smoothScrollBy(document.getElementById(`${evt.target.getAttribute('href').slice(1)}`));
+        menuHandler();
       }
-
-      evt.preventDefault();
-      menuHandler();
     });
   };
 
@@ -163,10 +167,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     scrollBtn.addEventListener('click', evt => {
       evt.preventDefault();
-      scrollBy({
-        top: scrollTarget.getBoundingClientRect().top,
-        behavior: 'smooth'
-      });
+      smoothScrollBy(scrollTarget);
     });
   };
 
