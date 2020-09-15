@@ -391,17 +391,12 @@ window.addEventListener('DOMContentLoaded', () => {
     statusMsg.style.cssText = 'font-size: 2rem; color: #ffffff';
 
     const postData = body =>
-      new Promise((resolve, reject) => {
-        const request = new XMLHttpRequest();
-        request.addEventListener('readystatechange', () => {
-          if (request.readyState !== 4) return;
-          if (request.status === 200) resolve();
-          else reject(request.status);
-        });
-
-        request.open('POST', 'server.php');
-        request.setRequestHeader('Content-Type', 'application/json');
-        request.send(JSON.stringify(body));
+      fetch('server.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
       });
 
     const formHandler = evt => {
@@ -432,7 +427,8 @@ window.addEventListener('DOMContentLoaded', () => {
         formData.forEach((value, key) => (body[key] = value.trim()));
 
         postData(body)
-          .then(() => {
+          .then(response => {
+            if (response.status !== 200) throw new Error('Error');
             statusMsg.textContent = successMsg;
             formElements.forEach(elem => elem.value = '');
           })
