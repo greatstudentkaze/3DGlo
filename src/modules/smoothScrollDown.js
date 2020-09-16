@@ -1,3 +1,5 @@
+import smoothScrollBy from './smoothScrollBy';
+
 const smoothScrollDown = () => {
   const scrollBtn = document.querySelector('.js-scroll-btn'),
     scrollTarget = document.querySelector('.service');
@@ -7,3 +9,5 @@ const smoothScrollDown = () => {
     smoothScrollBy(scrollTarget);
   });
 };
+
+export default smoothScrollDown;

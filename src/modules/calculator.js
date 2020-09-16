@@ -1,3 +1,5 @@
+import animate from './animate';
+
 const calculator = (price = 100) => {
   const calcBlock = document.querySelector('.calc-block'),
     inputType = calcBlock.querySelector('.calc-type'),
@@ -49,3 +51,5 @@ const calculator = (price = 100) => {
   });
 
 };
+
+export default calculator;

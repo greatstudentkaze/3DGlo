@@ -1,3 +1,5 @@
+import smoothScrollBy from './smoothScrollBy';
+
 const toggleMenu = () => {
   const menu = document.querySelector('menu');
 
@@ -22,3 +24,5 @@ const toggleMenu = () => {
     }
   });
 };
+
+export default toggleMenu;

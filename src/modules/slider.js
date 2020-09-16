@@ -71,3 +71,5 @@ const slider = () => {
 
   startSlider();
 };
+
+export default slider;

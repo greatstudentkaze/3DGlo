@@ -1,3 +1,5 @@
+import addZero from './addZero';
+
 const countTimer = deadline => {
   const timerHours = document.getElementById('timer-hours'),
     timerMinutes = document.getElementById('timer-minutes'),
@@ -35,3 +37,5 @@ const countTimer = deadline => {
   updateTimer();
   timerInterval = setInterval(updateTimer, 1000);
 };
+
+export default countTimer;

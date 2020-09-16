@@ -1,3 +1,5 @@
+import animate from './animate';
+
 const togglePopup = () => {
   const popup = document.querySelector('.popup'),
     popupContent = popup.querySelector('.popup-content'),
@@ -59,3 +61,5 @@ const togglePopup = () => {
     }
   });
 };
+
+export default togglePopup;

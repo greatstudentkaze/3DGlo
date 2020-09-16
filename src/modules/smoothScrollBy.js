@@ -4,3 +4,5 @@ const smoothScrollBy = scrollTarget => {
     behavior: 'smooth'
   });
 };
+
+export default smoothScrollBy;

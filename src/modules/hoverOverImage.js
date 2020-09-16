@@ -16,3 +16,5 @@ const hoverOverImage = () => {
     evt.target.src = imageSrc;
   });
 };
+
+export default hoverOverImage;

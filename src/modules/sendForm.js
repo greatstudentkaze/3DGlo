@@ -1,3 +1,5 @@
+import maskPhone from './maskPhone';
+
 const sendForm = () => {
   const errorMsg = 'Что-то пошло не так...',
     successMsg = 'Спасибо! Мы скоро с Вами свяжемся!',
@@ -86,3 +88,5 @@ const sendForm = () => {
     }
   });
 };
+
+export default sendForm;
