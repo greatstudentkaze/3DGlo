@@ -1,5 +1,15 @@
-'use strict';
+// Polyfills
+import '@babel/polyfill';
+import 'nodelist-foreach-polyfill';
+import 'formdata-polyfill';
+import 'es6-promise';
+import 'fetch-polyfill';
+import 'mdn-polyfills/Node.prototype.append';
+import 'scroll-behavior-polyfill';
+import elementClosest from 'element-closest';
+elementClosest(window);
 
+// Modules
 import countTimer from './modules/countTimer';
 import toggleMenu from './modules/toggleMenu';
 import togglePopup from './modules/togglePopup';
@@ -10,8 +20,10 @@ import hoverOverImage from './modules/hoverOverImage';
 import calculator from './modules/calculator';
 import sendForm from './modules/sendForm';
 
+// Init modules
+
 // Timer
-countTimer('24 september 2020 00:00');
+countTimer('21 september 2020 21:00');
 
 // Menu
 toggleMenu();
