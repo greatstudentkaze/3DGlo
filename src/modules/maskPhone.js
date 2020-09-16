@@ -1,4 +1,3 @@
-// eslint-disable-next-line strict,no-unused-vars
 const maskPhone = (selector, masked = '+7 (___) ___-__-__') => {
   const elems = document.querySelectorAll(selector);
 
