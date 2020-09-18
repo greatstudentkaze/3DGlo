@@ -18,13 +18,12 @@ const sendForm = () => {
                   <div class="sk-child sk-circle-12"></div>
                 </div>`;
 
-  // eslint-disable-next-line no-undef
   maskPhone('input[name="user_phone"]');
   const patterns = {
     'user_name': /^[а-яё ]+$/i,
     'user_email': /^[\w.]+@\w+\.\w{2,}$/i,
     'user_phone': /^\+?[78]([-() ]*\d){10}$/,
-    'user_message': /^[а-яё ]+$/i
+    'user_message': /^[а-яё .,;:!?"()-]+$/i
   };
 
   const statusMsg = document.createElement('div');
@@ -85,8 +84,10 @@ const sendForm = () => {
   document.body.addEventListener('input', evt => {
     const target = evt.target;
 
-    if (target.matches('input[name="user_name"]') || target.matches('input[name="user_message"]')) {
+    if (target.matches('input[name="user_name"]')) {
       target.value = target.value.replace(/[^а-яё ]/gi, '');
+    } else if (target.matches('input[name="user_message"]')) {
+      target.value = target.value.replace(/[^а-яё .,;:!?"()-]/gi, '');
     }
   });
 };
