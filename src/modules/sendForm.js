@@ -70,10 +70,12 @@ const sendForm = () => {
         .then(response => {
           if (response.status !== 200) throw new Error('Error');
           statusMsg.textContent = successMsg;
+          setTimeout(() => statusMsg.textContent = '', 5000);
           formElements.forEach(elem => elem.value = '');
         })
         .catch(err => {
           statusMsg.textContent = errorMsg;
+          setTimeout(() => statusMsg.textContent = '', 5000);
           console.error(err);
         });
     }
