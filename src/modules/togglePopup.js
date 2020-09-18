@@ -3,9 +3,13 @@ import animate from './animate';
 const togglePopup = () => {
   const popup = document.querySelector('.popup'),
     popupContent = popup.querySelector('.popup-content'),
-    popupBtns = document.querySelectorAll('.popup-btn');
+    serviceBlock = document.getElementById('service-block');
 
-  popupBtns.forEach(elem => elem.addEventListener('click', () => {
+  serviceBlock.addEventListener('click', evt => {
+    const target = evt.target;
+
+    if (!target.closest('.popup-btn')) return;
+
     popup.style.display = 'block';
 
     if (document.documentElement.clientWidth >= 768) {
@@ -28,7 +32,7 @@ const togglePopup = () => {
         }
       });
     }
-  }));
+  });
 
   popup.addEventListener('click', evt => {
     let target = evt.target;
