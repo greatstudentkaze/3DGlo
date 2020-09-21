@@ -47,7 +47,11 @@ const sliderCarouselOptions = {
   slideList: '.companies-hor',
   slidesNumber: 4,
   infinity: true,
-  responsive: []
+  responsive: [
+    { breakpoint: 992, slidesNumber: 3 },
+    { breakpoint: 768, slidesNumber: 2 },
+    { breakpoint: 576, slidesNumber: 1 }
+  ]
 };
 const sliderCarousel = new SliderCarousel(sliderCarouselOptions);
 sliderCarousel.init();
