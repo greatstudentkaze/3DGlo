@@ -35,7 +35,32 @@ class SliderCarousel {
   }
 
   configureToggles() {
-    console.log(123);
+    this.togglePrev.addEventListener('click', this.prevSlide.bind(this));
+    this.toggleNext.addEventListener('click', this.nextSlide.bind(this));
+  }
+
+  prevSlide() {
+    if (this.options.position > 0 || this.options.infinity) {
+      this.options.position--;
+
+      if (this.options.position < 0) {
+        this.options.position = this.options.maxPosition;
+      }
+
+      this.slideList.style.transform = `translateX(-${this.options.position * this.options.slideWidth}%)`;
+    }
+  }
+
+  nextSlide() {
+    if (this.options.position < this.options.maxPosition || this.options.infinity) {
+      this.options.position++;
+
+      if (this.options.position > this.options.maxPosition) {
+        this.options.position = 0;
+      }
+
+      this.slideList.style.transform = `translateX(-${this.options.position * this.options.slideWidth}%)`;
+    }
   }
 
   addClasses() {
