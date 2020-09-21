@@ -24,12 +24,31 @@ class SliderCarousel {
 
   init() {
     this.addClasses();
+    this.addStyles();
   }
 
   addClasses() {
     this.wrapper.classList.add('gsk-slider');
     this.slideList.classList.add('gsk-slider__list');
     [...this.slides].forEach(slide => slide.classList.add('gsk-slider__item'));
+  }
+
+  addStyles() {
+    if (this.slidesNumber === 4) return;
+
+    let style = document.getElementById('gsk-slider');
+    if (!style) {
+      style = document.createElement('style');
+      style.id = 'gsk-slider';
+    }
+
+    style.textContent = `
+      .gsk-slider__item {
+        flex-basis: ${this.options.slideWidth}% !important;
+      }
+    `;
+
+    document.head.append(style);
   }
 }
 
