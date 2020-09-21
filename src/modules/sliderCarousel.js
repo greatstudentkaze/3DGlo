@@ -32,6 +32,10 @@ class SliderCarousel {
       this.addToggles();
       this.configureToggles();
     }
+
+    if (this.responsive) {
+      this.makeSliderResponsive();
+    }
   }
 
   configureToggles() {
@@ -70,8 +74,6 @@ class SliderCarousel {
   }
 
   addStyles() {
-    if (this.slidesNumber === 4) return;
-
     let style = document.getElementById('gsk-slider');
     if (!style) {
       style = document.createElement('style');
@@ -107,6 +109,40 @@ class SliderCarousel {
     togglesWrapper.append(this.toggleNext);
 
     this.wrapper.append(togglesWrapper);
+  }
+
+  makeSliderResponsive() {
+    const defaultSlidesNumber = this.slidesNumber,
+      allBreakpoints = this.responsive.map(item => item.breakpoint),
+      maxBreakpoint = Math.max(...allBreakpoints);
+
+    this.checkWindowWidth(allBreakpoints, maxBreakpoint, defaultSlidesNumber);
+
+    window.addEventListener('resize',
+      this.checkWindowWidth.bind(this, allBreakpoints, maxBreakpoint, defaultSlidesNumber));
+  }
+
+  checkWindowWidth(allBreakpoints, maxBreakpoint, defaultSlidesNumber = 4) {
+    const windowWidth = document.documentElement.clientWidth;
+
+    if (windowWidth < maxBreakpoint) {
+      allBreakpoints.forEach((breakpoint, i) => {
+        if (windowWidth < breakpoint) {
+          this.slidesNumber = this.responsive[i].slidesNumber;
+          this.updateOptions();
+        }
+      });
+    } else {
+      this.slidesNumber = defaultSlidesNumber;
+      this.updateOptions();
+    }
+  }
+
+  updateOptions() {
+    this.slideList.style.transform = 'translateX(0)';
+    this.options.maxPosition = this.slides.length - this.slidesNumber;
+    this.options.slideWidth = Math.floor(100 / this.slidesNumber);
+    this.addStyles();
   }
 }
 
