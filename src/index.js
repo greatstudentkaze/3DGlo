@@ -16,6 +16,7 @@ import togglePopup from './modules/togglePopup';
 import smoothScrollDown from './modules/smoothScrollDown';
 import tabs from './modules/tabs';
 import slider from './modules/slider';
+import SliderCarousel from './modules/sliderCarousel';
 import hoverOverImage from './modules/hoverOverImage';
 import calculator from './modules/calculator';
 import sendForm from './modules/sendForm';
@@ -39,6 +40,17 @@ tabs();
 
 // Slider
 slider();
+
+// Slider Carousel
+const sliderCarouselOptions = {
+  wrapper: '.companies-wrapper',
+  slideList: '.companies-hor',
+  slidesNumber: 4,
+  infinity: true,
+  responsive: []
+};
+const sliderCarousel = new SliderCarousel(sliderCarouselOptions);
+sliderCarousel.init();
 
 // Image hover
 hoverOverImage();
