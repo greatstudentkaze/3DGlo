@@ -26,10 +26,10 @@ const togglePopup = () => {
       popupContent.style.top = '-100%';
 
       animate({
-        duration: 800,
+        duration: 1000,
         timing: makeEaseOut(bounce),
         draw(progress) {
-          popupContent.style.top = progress * 10 + '%';
+          popupContent.style.top = (progress * 100 - 90) + '%';
         }
       });
     }
