@@ -25,6 +25,17 @@ class SliderCarousel {
   init() {
     this.addClasses();
     this.addStyles();
+
+    if (this.togglePrev && this.toggleNext) {
+      this.configureToggles();
+    } else {
+      this.addToggles();
+      this.configureToggles();
+    }
+  }
+
+  configureToggles() {
+    console.log(123);
   }
 
   addClasses() {
@@ -49,6 +60,28 @@ class SliderCarousel {
     `;
 
     document.head.append(style);
+  }
+
+  createToggle(type = '', textContent = '', elementClass = 'gsk-slider__toggle') {
+    const toggle = document.createElement('button');
+    toggle.className = `${elementClass} ${elementClass}--${type}`;
+    toggle.type = 'button';
+    toggle.textContent = textContent;
+
+    return toggle;
+  }
+
+  addToggles() {
+    const togglesWrapper = document.createElement('div');
+    togglesWrapper.className = 'gsk-slider__toggles';
+
+    this.togglePrev = this.createToggle('prev', 'Назад');
+    this.toggleNext = this.createToggle('next', 'Вперед');
+
+    togglesWrapper.append(this.togglePrev);
+    togglesWrapper.append(this.toggleNext);
+
+    this.wrapper.append(togglesWrapper);
   }
 }
 
